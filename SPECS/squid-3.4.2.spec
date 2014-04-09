@@ -35,11 +35,15 @@ make
 make DESTDIR=%{buildroot} install
 
 %post
-mkdir /var/spool/squid/cache/
+ln -s %{_sbindir}/%{name}-%{version} %{_sbindir}/%{name}
+%{_sbindir}/%{name} -z
+touch %{_localstatedir}/logs/access.log
+touch %{_localstatedir}/logs/cache.log
+chown nobody:nobody %{_localstatedir}/logs/access.log
+chown nobody:nobody %{_localstatedir}/logs/cache.log
 
 %postun
-
-rm -rf /var/spool/squid
+rm %{_sbindir}/%{name}
 
 %files
 %defattr(-,root,root)
